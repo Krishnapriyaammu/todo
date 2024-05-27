@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class NewTask extends StatefulWidget {
@@ -8,7 +9,7 @@ class NewTask extends StatefulWidget {
 }
 
 class _NewTaskState extends State<NewTask> {
-   String _category = 'Others';
+    String _category = 'Others';
   bool _isSwitched = false;
   int _charCount = 0;
   final int _maxChars = 250;
@@ -45,7 +46,7 @@ class _NewTaskState extends State<NewTask> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 150, // Adjust the height as needed
+              height: 150,
               padding: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
@@ -187,9 +188,7 @@ class _NewTaskState extends State<NewTask> {
               child: Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      // Add save task action
-                    },
+                    onPressed: _saveTask,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
                       padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -205,6 +204,30 @@ class _NewTaskState extends State<NewTask> {
         ),
       ),
     );
+  }
+
+  void _saveTask() async {
+    if (_titleController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Title cannot be empty')),
+      );
+      return;
+    }
+
+    CollectionReference tasks = FirebaseFirestore.instance.collection('tasks');
+
+    await tasks.add({
+      'title': _titleController.text,
+      'category': _category,
+      'date': _selectedDate,
+      'completed': _isSwitched,
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Task saved')),
+    );
+
+    Navigator.of(context).pop();
   }
 }
 

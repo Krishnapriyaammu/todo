@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:todo/counter.dart';
 import 'package:todo/list%20task.dart';
 import 'package:todo/login.dart';
 import 'package:todo/myhome.dart';
 import 'package:todo/profile.dart';
-import 'package:todo/timer.dart';
 
 class MyHome extends StatefulWidget {
   const MyHome({super.key});
@@ -20,8 +18,8 @@ class _MyHomeState extends State<MyHome> {
 
   static  List<Widget> _pages = <Widget>[
     FocusNowPage(), // The main home page
-    TimeDate(), // The list task page
-    Counter(), // Placeholder for Profile page
+    ListTask(), // The list task page
+    Profile(), // Placeholder for Profile page
   ];
 
   void _onItemTapped(int index) {
